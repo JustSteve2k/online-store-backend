@@ -1,6 +1,13 @@
+const Product = require("../models/productsModel");
+
 exports.getProducts = async (req, res, next) => {
   //console.log("Someone reached the base products route.");
-  res.send("This is the route for getting products.");
+  let id = req.query.id;
+
+  const result = await Product.findOne({ id: id });
+
+  if (result === null) res.send(`ID ${id} was not found`);
+  else res.send(result);
 };
 
 exports.postNewProduct = async (req, res, next) => {
