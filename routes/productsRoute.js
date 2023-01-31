@@ -1,47 +1,23 @@
 const express = require("express");
 
+const productsController = require("../controllers/productsController");
+
 const router = express.Router();
 
 // Gets all products.
-router.get("/", (req, res, next) => {
-  console.log("Someone reached the base products route.");
-  res.send("Welcome to the products route!");
-});
-
-// Gets an item by id provided.
-// Request will look like this - localhost:5000/products/newitem?id=testParam
-router.get("/newitem", (req, res, next) => {
-  let productID = req.query.id;
-  res.send(`You are searching for product - ${productID}`);
-});
-
-// Example using params
-// Request will look like this - localhost:5000/products/tester/hmm
-router.get("/tester/:id", (req, res, next) => {
-  let id = req.params.id;
-
-  res.send(`You send the id param - ${id}`);
-});
+router.get("/", productsController.getProducts);
 
 // Adds a new product
-router.post("/item", (req, res, next) => {
-  res.send("This is the route for adding a new product.");
-});
-
-// Removes a product
-router.delete("/item", (req, res, next) => {
-  res.send("this is the route for removing a product");
-});
+router.post("/", productsController.postNewProduct);
 
 // Updates a product
-router.patch("/item", (req, res, next) => {
-  res.send("This is the route for updating a product.");
-});
+router.patch("/", productsController.patchProduct);
 
-// Deletes a product
-router.delete("/item", (req, res, next) => {
-  res.send("This is the route for deleting a product.");
-});
+// Removes a product
+router.delete("/", productsController.deleteProduct);
+
+// Gets a total count of all the products
+router.get("/count", productsController.getProductCount);
 
 // Leftover route.
 router.use("/", (req, res, next) => {
@@ -57,3 +33,4 @@ module.exports = router;
 // Removing a product - Started
 // Updating a product - Started
 // Deleting a product - Started
+// Getting counts of products - Started
