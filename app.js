@@ -11,7 +11,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.get("/main", (req, res, next) => {
-  res.send("you've reached the main page!");
+  res.send("you've reached the main page of products api!");
 });
 
 app.use("/products", productRoutes);
