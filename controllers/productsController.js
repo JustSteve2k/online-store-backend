@@ -4,11 +4,31 @@ const Product = require("../models/productsModel");
 exports.getProducts = async (req, res, next) => {
   //console.log("Someone reached the base products route.");
   let id = req.query.id;
+  let statusCode = 404;
+  let message = "Test";
+  let result = "";
 
-  const result = await Product.findOne({ id: id });
+  id = parseInt(id);
 
-  if (result === null) res.send(`ID ${id} was not found`);
-  else res.send(result);
+  //res.send(`${id} is a data type of ${typeof id}`);
+
+  if (isNaN(id)) {
+    console.log("nope its not a number");
+    message = "Error, need to submit a number in the ID slot.";
+  } else {
+    console.log("yep its number");
+    result = await Product.findOne({ id: id });
+    statusCode = 200;
+  }
+
+  console.log(result);
+
+  if (result === null && statusCode === 200) {
+    message = `ID ${id} was not found in the database`;
+    statusCode = 404;
+  }
+
+  statusCode === 200 ? res.status(statusCode).send(result) : res.status(statusCode).send(message);
 };
 
 exports.postNewProduct = async (req, res, next) => {
@@ -16,11 +36,6 @@ exports.postNewProduct = async (req, res, next) => {
   const { item, id, cost, categories, imgUrl, quantity } = req.body;
 
   let product = { id: id, item: item, cost: cost, categories: categories, imgUrl: imgUrl, quantity: quantity };
-
-  //   const result = await Product.create(product, (err, small) => {
-  //     if (err) return handleError(err);
-  //     console.log(`New item created with an id of - ${small._id}`);
-  //   });
 
   const result = await Product.create(product);
 
@@ -40,9 +55,6 @@ exports.patchProduct = async (req, res, next) => {
   if (req.body.categories !== undefined) result.categories = req.body.categories;
   if (req.body.imgUrl !== undefined) result.imgUrl = req.body.imgUrl;
   if (req.body.quantity !== undefined) result.quantity = req.body.quantity;
-
-  // console.log("prelim result");
-  // console.log(result);
 
   const updatedResult = await Product.findOneAndUpdate(
     { id: result.id },
