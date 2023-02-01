@@ -13,9 +13,9 @@ exports.getProducts = async (req, res, next) => {
 
 exports.postNewProduct = async (req, res, next) => {
   //console.log("Someone reached the add products route.");
-  const { item, id, cost, categories } = req.body;
+  const { item, id, cost, categories, imgUrl, quantity } = req.body;
 
-  let product = { id: id, item: item, cost: cost, categories: categories };
+  let product = { id: id, item: item, cost: cost, categories: categories, imgUrl: imgUrl, quantity: quantity };
 
   //   const result = await Product.create(product, (err, small) => {
   //     if (err) return handleError(err);
@@ -41,10 +41,17 @@ exports.deleteProduct = async (req, res, next) => {
   const result = await Product.deleteMany({ id: id });
   console.log(result);
 
-  res.send(`Deleted ${result.deletedCount} entries with an id of ${id}`);
+  res.send(`Deleted ${result.deletedCount} entries.`);
 };
 
 exports.getProductCount = async (req, res, next) => {
   //console.log("Someone reached the count products route.");
-  res.send("This route gets the total count of products in the database.");
+  let results = "";
+
+  if (req.query.categories === undefined || req.query.categories === "all") results = await Product.countDocuments();
+  else results = await Product.countDocuments({ categories: req.query.categories });
+
+  console.log(results);
+
+  res.send(`A total of ${results} entries were found in the product database.`);
 };
