@@ -31,6 +31,31 @@ exports.postNewProduct = async (req, res, next) => {
 
 exports.patchProduct = async (req, res, next) => {
   //console.log("Someone reached the patch products route.");
+  let id = req.query.id;
+  let result = await Product.findOne({ id: id });
+
+  console.log(req.body.item);
+  if (req.body.item !== undefined) result.item = req.body.item;
+  if (req.body.cost !== undefined) result.cost = req.body.cost;
+  if (req.body.categories !== undefined) result.categories = req.body.categories;
+  if (req.body.imgUrl !== undefined) result.imgUrl = req.body.imgUrl;
+  if (req.body.quantity !== undefined) result.quantity = req.body.quantity;
+
+  // console.log("prelim result");
+  // console.log(result);
+
+  const updatedResult = await Product.findOneAndUpdate(
+    { id: result.id },
+    {
+      id: result.id,
+      item: result.item,
+      cost: result.cost,
+      categories: result.categories,
+      imgUrl: result.imgUrl,
+      quantity: result.quantity,
+    }
+  );
+
   res.send("This is the route for updating a product.");
 };
 
