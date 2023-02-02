@@ -19,6 +19,11 @@ router.delete("/", productsController.deleteProduct);
 // Gets a total count of all the products
 router.get("/count", productsController.getProductCount);
 
+router.get("/test1", async (req, res, next) => {
+  console.log("test route 1");
+  res.send("Test route 1 hit");
+});
+
 // Leftover route.
 router.use("/", (req, res, next) => {
   res.status(404).send("someone is lost in the products route!");
