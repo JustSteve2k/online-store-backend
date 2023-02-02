@@ -33,9 +33,9 @@ exports.getProducts = async (req, res, next) => {
 
 exports.postNewProduct = async (req, res, next) => {
   //console.log("Someone reached the add products route.");
-  const { item, id, cost, categories, imgUrl, quantity } = req.body;
+  const { item, id, cost, categories, imgUrl, quantity, description } = req.body;
 
-  let product = { id: id, item: item, cost: cost, categories: categories, imgUrl: imgUrl, quantity: quantity };
+  let product = { id: id, item: item, cost: cost, categories: categories, imgUrl: imgUrl, quantity: quantity, description: description };
 
   const result = await Product.create(product);
 
@@ -55,6 +55,7 @@ exports.patchProduct = async (req, res, next) => {
   if (req.body.categories !== undefined) result.categories = req.body.categories;
   if (req.body.imgUrl !== undefined) result.imgUrl = req.body.imgUrl;
   if (req.body.quantity !== undefined) result.quantity = req.body.quantity;
+  if (req.body.description !== undefined) result.description = req.body.description || "not provided yet";
 
   const updatedResult = await Product.findOneAndUpdate(
     { id: result.id },
@@ -65,6 +66,7 @@ exports.patchProduct = async (req, res, next) => {
       categories: result.categories,
       imgUrl: result.imgUrl,
       quantity: result.quantity,
+      description: result.description,
     }
   );
 
