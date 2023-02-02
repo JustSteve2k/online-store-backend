@@ -17,6 +17,9 @@ const productSchema = new mongoose.Schema({
     min: 0,
     max: 9999,
   },
+  description: {
+    type: String,
+  },
 });
 
 module.exports = mongoose.model("Product", productSchema);
