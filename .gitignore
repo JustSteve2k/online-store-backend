@@ -3,3 +3,5 @@ node_modules
 config/db.config
 
 routes/example.js
+
+Changelog.txt
