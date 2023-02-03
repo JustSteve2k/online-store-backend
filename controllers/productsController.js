@@ -41,7 +41,7 @@ exports.postNewProduct = async (req, res, next) => {
 
   console.log(result);
 
-  res.send(`Item succssfully added to database with an _id of ${result._id}!`);
+  res.status(200).send({ response: `Item succssfully added to database with an _id of ${result._id}!` });
 };
 
 exports.patchProduct = async (req, res, next) => {
@@ -70,7 +70,7 @@ exports.patchProduct = async (req, res, next) => {
     }
   );
 
-  res.send("This is the route for updating a product.");
+  res.status(200).send({ response: "This is the route for updating a product." });
 };
 
 exports.deleteProduct = async (req, res, next) => {
@@ -80,7 +80,7 @@ exports.deleteProduct = async (req, res, next) => {
   const result = await Product.deleteMany({ id: id });
   console.log(result);
 
-  res.send(`Deleted ${result.deletedCount} entries.`);
+  res.status(200).send({ response: `Deleted ${result.deletedCount} entries.` });
 };
 
 exports.getProductCount = async (req, res, next) => {
@@ -92,5 +92,5 @@ exports.getProductCount = async (req, res, next) => {
 
   console.log(results);
 
-  res.send(`A total of ${results} entries were found in the product database.`);
+  res.status(200).send({ response: `A total of ${results} entries were found in the product database.` });
 };
