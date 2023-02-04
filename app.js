@@ -2,6 +2,7 @@ const bodyParser = require("body-parser");
 const express = require("express");
 const connectDB = require("./config/db");
 var cors = require("cors");
+const { errorHandler } = require("./middleware/errorMiddleware");
 
 const app = express();
 
@@ -38,6 +39,8 @@ app.use("/", (req, res, next) => {
   console.log("someone is lost");
   res.status(404).send("you must be lost!");
 });
+
+app.use(errorHandler);
 
 app.listen(port);
 console.log(`app now listening on port ${port}`);
