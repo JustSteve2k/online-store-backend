@@ -8,12 +8,6 @@ exports.getProducts = asyncHandler(async (req, res, next) => {
 
   let id = parseInt(req.query.id);
 
-  if (isNaN(id)) {
-    console.log("Someone tried to submit NaN to the get products route");
-    res.status(400);
-    throw new Error("Error, need to submit a number in the ID slot.");
-  }
-
   const result = await Product.findOne({ id: id });
 
   if (result === null) {
@@ -24,8 +18,16 @@ exports.getProducts = asyncHandler(async (req, res, next) => {
   res.status(200).send(result);
 });
 
-exports.postNewProduct = async (req, res, next) => {
+exports.postNewProduct = asyncHandler(async (req, res, next) => {
   //console.log("Someone reached the add products route.");
+  const check = await Product.findOne({ id: req.body.id });
+
+  if (check) {
+    res.status(302);
+    console.log("hmmmm");
+    throw new Error("That product was already used, pick another id");
+  }
+
   const { item, id, cost, categories, imgUrl, quantity, description } = req.body;
 
   let product = { id: id, item: item, cost: cost, categories: categories, imgUrl: imgUrl, quantity: quantity, description: description };
@@ -35,10 +37,11 @@ exports.postNewProduct = async (req, res, next) => {
   console.log(result);
 
   res.status(200).send({ response: `Item succssfully added to database with an _id of ${result._id}!` });
-};
+});
 
-exports.patchProduct = async (req, res, next) => {
+exports.patchProduct = asyncHandler(async (req, res, next) => {
   //console.log("Someone reached the patch products route.");
+
   let id = req.query.id;
   let result = await Product.findOne({ id: id });
 
@@ -63,18 +66,20 @@ exports.patchProduct = async (req, res, next) => {
     }
   );
 
-  res.status(200).send({ response: "This is the route for updating a product." });
-};
+  // res.status(200).send({ response: "This is the route for updating a product." });
+  res.status(200).send({ response: `ID ${result._id} was updated successfully` });
+});
 
-exports.deleteProduct = async (req, res, next) => {
+exports.deleteProduct = asyncHandler(async (req, res, next) => {
   //console.log("Someone reached the delete products route.");
+
   let id = req.query.id;
 
   const result = await Product.deleteMany({ id: id });
   console.log(result);
 
   res.status(200).send({ response: `Deleted ${result.deletedCount} entries.` });
-};
+});
 
 exports.getProductCount = async (req, res, next) => {
   //console.log("Someone reached the count products route.");
