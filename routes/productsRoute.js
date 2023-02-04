@@ -1,20 +1,22 @@
 const express = require("express");
 
 const productsController = require("../controllers/productsController");
+const validateIdMiddleware = require("../middleware/validateIdMiddleware");
+const { validate } = require("../models/productsModel");
 
 const router = express.Router();
 
 // Gets all products.
-router.get("/", productsController.getProducts);
+router.get("/", validateIdMiddleware, productsController.getProducts);
 
 // Adds a new product
 router.post("/", productsController.postNewProduct);
 
 // Updates a product
-router.patch("/", productsController.patchProduct);
+router.patch("/", validateIdMiddleware, productsController.patchProduct);
 
 // Removes a product
-router.delete("/", productsController.deleteProduct);
+router.delete("/", validateIdMiddleware, productsController.deleteProduct);
 
 // Gets a total count of all the products
 router.get("/count", productsController.getProductCount);
