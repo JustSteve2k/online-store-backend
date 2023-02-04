@@ -1,35 +1,28 @@
 const bodyParser = require("body-parser");
+const asyncHandler = require("express-async-handler");
+
 const Product = require("../models/productsModel");
 
-exports.getProducts = async (req, res, next) => {
+exports.getProducts = asyncHandler(async (req, res, next) => {
   //console.log("Someone reached the base products route.");
-  let id = req.query.id;
-  let statusCode = 404;
-  let message = "Test";
-  let result = "";
 
-  id = parseInt(id);
-
-  //res.send(`${id} is a data type of ${typeof id}`);
+  let id = parseInt(req.query.id);
 
   if (isNaN(id)) {
-    console.log("nope its not a number");
-    message = "Error, need to submit a number in the ID slot.";
-  } else {
-    console.log("yep its number");
-    result = await Product.findOne({ id: id });
-    statusCode = 200;
+    console.log("Someone tried to submit NaN to the get products route");
+    res.status(400);
+    throw new Error("Error, need to submit a number in the ID slot.");
   }
 
-  console.log(result);
+  const result = await Product.findOne({ id: id });
 
-  if (result === null && statusCode === 200) {
-    message = `ID ${id} was not found in the database`;
-    statusCode = 404;
+  if (result === null) {
+    res.status(404);
+    throw new Error(`ID ${id} was not found in the database`);
   }
 
-  statusCode === 200 ? res.status(statusCode).send(result) : res.status(statusCode).send(message);
-};
+  res.status(200).send(result);
+});
 
 exports.postNewProduct = async (req, res, next) => {
   //console.log("Someone reached the add products route.");
