@@ -18,6 +18,9 @@ router.patch("/", validateIdMiddleware, productsController.patchProduct);
 // Removes a product
 router.delete("/", validateIdMiddleware, productsController.deleteProduct);
 
+// Gets all products
+router.get("/all", productsController.getAllProducts);
+
 // Gets a total count of all the products
 router.get("/count", productsController.getProductCount);
 

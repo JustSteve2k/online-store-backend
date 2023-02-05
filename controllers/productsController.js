@@ -92,3 +92,19 @@ exports.getProductCount = async (req, res, next) => {
 
   res.status(200).send({ response: `A total of ${results} entries were found in the product database.` });
 };
+
+exports.getAllProducts = asyncHandler(async (req, res) => {
+  console.log("getting all products eventually");
+
+  const results = await Product.find({});
+
+  if (results.length === 0) {
+    res.status(404);
+    throw new Error("The database seems to be empty.  You should add some products!");
+  }
+
+  console.log(results);
+
+  // res.status(200).send({ response: "You will eventually get all the products from this response." });
+  res.status(200).send({ response: results });
+});
