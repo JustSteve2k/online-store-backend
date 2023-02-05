@@ -85,12 +85,14 @@ exports.getProductCount = async (req, res, next) => {
   //console.log("Someone reached the count products route.");
   let results = "";
 
-  if (req.query.categories === undefined || req.query.categories === "all") results = await Product.countDocuments();
+  if (req.query.categories === undefined || req.query.categories.trim() === "") req.query.categories = "all";
+
+  if (req.query.categories === "all") results = await Product.countDocuments();
   else results = await Product.countDocuments({ categories: req.query.categories });
 
   console.log(results);
 
-  res.status(200).send({ response: `A total of ${results} entries were found in the product database.` });
+  res.status(200).send({ response: `A total of ${results} entries were found in the product database of type ${req.query.categories}.` });
 };
 
 exports.getAllProducts = asyncHandler(async (req, res) => {
