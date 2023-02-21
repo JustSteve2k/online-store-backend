@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const colors = require("colors");
-const config = require("./db.config");
+//const config = require("./db.config");
 
 const credentials = {
   user: process.env.user || config.user,
