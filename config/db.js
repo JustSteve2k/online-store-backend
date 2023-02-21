@@ -1,6 +1,12 @@
 const mongoose = require("mongoose");
 const colors = require("colors");
-const credentials = require("./db.config");
+const config = require("./db.config");
+
+const credentials = {
+  user: process.env.user || config.user,
+  password: process.env.password || config.password,
+  cluster: process.env.cluster || config.cluster,
+};
 
 const connectDB = async () => {
   try {
