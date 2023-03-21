@@ -1,11 +1,11 @@
 const mongoose = require("mongoose");
 const colors = require("colors");
-//const config = require("./db.config");
+require("dotenv").config();
 
 const credentials = {
-  user: process.env.user || config.user,
-  password: process.env.password || config.password,
-  cluster: process.env.cluster || config.cluster,
+  user: process.env.USER,
+  password: process.env.PASSWORD,
+  cluster: process.env.CLUSTER,
 };
 
 const connectDB = async () => {

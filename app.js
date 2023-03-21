@@ -3,12 +3,13 @@ const express = require("express");
 const connectDB = require("./config/db");
 var cors = require("cors");
 const { errorHandler } = require("./middleware/errorMiddleware");
+require("dotenv").config();
 
 const app = express();
 
 connectDB();
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT;
 
 const productRoutes = require("./routes/productsRoute");
 //app.options("*", cors());
